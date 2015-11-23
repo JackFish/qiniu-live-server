@@ -1,0 +1,4 @@
+1. 流的stream_title是唯一的，不可以重复
+2. stream的id是 <zone>.<hub>.<stream_title> ,例如 z1.jinxinxin.test3
+
+3. http://www.dev2patrick.com/jin-ke-neng-bu-yao-yong-android-permission-get_tasksliao/
