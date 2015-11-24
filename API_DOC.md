@@ -378,3 +378,44 @@ API_SERVER_ERROR
 }
 ```
 
+##备注
+
+**1. AccessToken的生成方法说明**
+
+>AccessToken是直播业务服务端API验证请求合法性的字符串，由客户端根据一定的算法生成。由于本项目是演示项目，所以采用的API合法性验证方式可能比较简陋，实际开发
+>过程中，请根据自身业务特点选用合适API验证方式。
+
+本直播业务服务器端的AccessToken生成规则如下：
+
+```
+public static String md5Hash(String s) {
+    char hexDigits[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
+    try {
+        byte[] btInput = s.getBytes();
+        MessageDigest mdInst = MessageDigest.getInstance("MD5");
+        mdInst.update(btInput);
+        byte[] md = mdInst.digest();
+        int j = md.length;
+        char str[] = new char[j * 2];
+        int k = 0;
+        for (int i = 0; i < j; i++) {
+            byte byte0 = md[i];
+            str[k++] = hexDigits[byte0 >>> 4 & 0xf];
+            str[k++] = hexDigits[byte0 & 0xf];
+        }
+        return new String(str);
+    } catch (Exception e) {
+        e.printStackTrace();
+        return null;
+    }
+}
+    
+public static String createAccessToken(String sessionId) {
+    long timestamp = System.currentTimeMillis() / 1000;
+    String ts = String.format("%d", timestamp);
+    String encodedTs = Base64.encodeToString(ts.getBytes(), Base64.URL_SAFE);
+    String toSign = String.format("%s:%s:%s", sessionId, ts, sessionId);
+    String accessToken = String.format("%s:%s", Tools.md5Hash(toSign), encodedTs);
+    return accessToken;
+}
+```
