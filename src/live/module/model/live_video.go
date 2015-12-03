@@ -96,7 +96,6 @@ func GetMyLiveVideoList(userId int, videoList *[]LiveVideo) (err error) {
 	return
 }
 
-
 func GetLiveVideoByPublishId(publishId string, liveVideo *LiveVideo) (err error) {
 	qs := orm.NewOrm().QueryTable("LiveVideo").Filter("PublishId", publishId).Limit(1)
 	qErr := qs.One(liveVideo)

@@ -5,6 +5,7 @@ import (
 	"encoding/base64"
 	"encoding/hex"
 	"fmt"
+	"github.com/qiniu/log"
 	"strconv"
 	"strings"
 	"time"
@@ -63,7 +64,9 @@ func IsAccessTokenValid(sessionId, accessToken string) (valid bool) {
 	}
 
 	localHash := Md5Hash(fmt.Sprintf("%s:%s:%s", sessionId, ts, sessionId))
-	valid = (items[0] == localHash)
 
+	log.Debug("Local Hash:", localHash)
+
+	valid = (items[0] == localHash)
 	return
 }

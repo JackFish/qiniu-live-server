@@ -20,17 +20,18 @@ func NewServer(cfg *config.ServerConfig) *LiveServer {
 	serv := LiveServer{}
 	serv.cfg = cfg
 	serv.handlers = map[string]ServiceHandler{
-		"/login":            serv.serveLogin,
-		"/signup":           serv.serveSignup,
-		"/get/stream":       serv.serveGetStream,
-		"/status/stream":    serv.serveStatusStream,
-		"/start/publish":    serv.serveStartPublish,
-		"/stop/publish":     serv.serveStopPublish,
-		"/live/stream/list": serv.serveLivePublishingList,
-		"/live/video/list":  serv.serveLiveVideoList,
-		"/my/live/video/list":    serv.serveMyVideoList,
-		"/get/play/stream":  serv.serveGetLivePlayStream,
-		"/get/play/video":   serv.serveGetLivePlayVideo,
+		"/login":              serv.serveLogin,
+		"/signup":             serv.serveSignup,
+		"/get/stream":         serv.serveGetStream,
+		"/status/stream":      serv.serveStatusStream,
+		"/start/publish":      serv.serveStartPublish,
+		"/stop/publish":       serv.serveStopPublish,
+		"/live/stream/list":   serv.serveLivePublishingList,
+		"/live/video/list":    serv.serveLiveVideoList,
+		"/my/live/video/list": serv.serveMyVideoList,
+		"/my/live/play/urls":  serv.serveMyLivePlayUrls,
+		"/get/play/stream":    serv.serveGetLivePlayStream,
+		"/get/play/video":     serv.serveGetLivePlayVideo,
 	}
 	return &serv
 }

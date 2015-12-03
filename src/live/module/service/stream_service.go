@@ -17,7 +17,7 @@ func (this *GetStreamResult) SetOk() {
 }
 
 func GetStream(sessionId, accessToken string, gResult *GetStreamResult) {
-	userId, valid := CheckAuthValid(sessionId, accessToken, gResult.ApiResult);
+	userId, valid := CheckAuthValid(sessionId, accessToken, &gResult.ApiResult)
 	if !valid {
 		return
 	}

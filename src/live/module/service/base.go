@@ -2,8 +2,8 @@ package service
 
 import (
 	"fmt"
-	"live/utils"
 	"live/module/model"
+	"live/utils"
 )
 
 type ApiResult struct {
@@ -21,7 +21,7 @@ func (this *ApiResult) SetFormatCode(code int, val string) {
 	this.Desc = fmt.Sprintf(ApiStatus[this.Code], val)
 }
 
-func CheckAuthValid(sessionId, accessToken string, vResult ApiResult) (userId int, valid bool) {
+func CheckAuthValid(sessionId, accessToken string, vResult *ApiResult) (userId int, valid bool) {
 	if sessionId == "" {
 		vResult.SetFormatCode(API_PARAM_ERROR, "session id is empty")
 		return

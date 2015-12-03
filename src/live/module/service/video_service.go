@@ -1,9 +1,9 @@
 package service
 
 import (
+	"github.com/qiniu/log"
 	"live/module/model"
 	"live/module/service/pilis"
-	"github.com/qiniu/log"
 )
 
 type PlaybackVideo struct {
@@ -46,7 +46,7 @@ func (this *PublishingVideoListResult) SetOk() {
 
 type VideoPlayResult struct {
 	ApiResult
-	Orientation int `json:"orientation"`
+	Orientation int               `json:"orientation"`
 	PlayUrls    map[string]string `json:"playUrls"`
 }
 
@@ -59,7 +59,7 @@ func (this *VideoPlayResult) SetOk() {
 
 type StreamPlayResult struct {
 	ApiResult
-	Orientation int `json:"orientation"`
+	Orientation int               `json:"orientation"`
 	PlayUrls    map[string]string `json:"playUrls"`
 }
 
@@ -68,9 +68,21 @@ func (this *StreamPlayResult) SetOk() {
 	this.Desc = "get stream play url success"
 }
 
+///////////////////////
+
+type MyLivePlayUrlsResult struct {
+	ApiResult
+	LivePlayUrls map[string]string `json:"livePlayUrls"`
+}
+
+func (this *MyLivePlayUrlsResult) SetOk() {
+	this.Code = API_OK
+	this.Desc = "get stream live play urls success"
+}
+
 //////////////////////
 func GetVideoList(sessionId, accessToken string, vResult *PlaybackVideoListResult) {
-	if _, valid := CheckAuthValid(sessionId, accessToken, vResult.ApiResult); !valid {
+	if _, valid := CheckAuthValid(sessionId, accessToken, &vResult.ApiResult); !valid {
 		return
 	}
 
@@ -100,7 +112,7 @@ func GetVideoList(sessionId, accessToken string, vResult *PlaybackVideoListResul
 }
 
 func GetPublishingList(sessionId, accessToken string, vResult *PublishingVideoListResult) {
-	if _, valid := CheckAuthValid(sessionId, accessToken, vResult.ApiResult); !valid {
+	if _, valid := CheckAuthValid(sessionId, accessToken, &vResult.ApiResult); !valid {
 		return
 	}
 
@@ -131,7 +143,7 @@ func GetPublishingList(sessionId, accessToken string, vResult *PublishingVideoLi
 }
 
 func GetMyVideoList(sessionId, accessToken string, vResult *PlaybackVideoListResult) {
-	userId, valid := CheckAuthValid(sessionId, accessToken, vResult.ApiResult);
+	userId, valid := CheckAuthValid(sessionId, accessToken, &vResult.ApiResult)
 	if !valid {
 		return
 	}
@@ -162,7 +174,7 @@ func GetMyVideoList(sessionId, accessToken string, vResult *PlaybackVideoListRes
 }
 
 func GetStreamPlayResult(sessionId, accessToken, publishId string, pResult *StreamPlayResult) {
-	if _, valid := CheckAuthValid(sessionId, accessToken, pResult.ApiResult); !valid {
+	if _, valid := CheckAuthValid(sessionId, accessToken, &pResult.ApiResult); !valid {
 		return
 	}
 
@@ -197,7 +209,7 @@ func GetStreamPlayResult(sessionId, accessToken, publishId string, pResult *Stre
 }
 
 func GetVideoPlayResult(sessionId, accessToken, publishId string, pResult *VideoPlayResult) {
-	if _, valid := CheckAuthValid(sessionId, accessToken, pResult.ApiResult); !valid {
+	if _, valid := CheckAuthValid(sessionId, accessToken, &pResult.ApiResult); !valid {
 		return
 	}
 
@@ -228,5 +240,29 @@ func GetVideoPlayResult(sessionId, accessToken, publishId string, pResult *Video
 	pResult.PlayUrls = playUrls
 	pResult.Orientation = liveVideo.Orientation
 	pResult.SetOk()
+	return
+}
+
+func GetMyLivePlayUrls(sessionId, accessToken string, pResult *MyLivePlayUrlsResult) {
+	userId, valid := CheckAuthValid(sessionId, accessToken, &pResult.ApiResult)
+	if !valid {
+		return
+	}
+
+	streamId, gErr := model.GetStreamIdOfUser(userId)
+	if gErr != nil {
+		pResult.SetCode(API_SERVER_ERROR)
+		return
+	}
+
+	playUrls, gErr := pilis.GetLivePlayUrls(streamId)
+	if gErr != nil {
+		pResult.SetCode(API_SERVER_ERROR)
+		return
+	}
+
+	pResult.LivePlayUrls = playUrls
+	pResult.SetOk()
+
 	return
 }

@@ -49,6 +49,21 @@ func (this *LiveServer) serveMyVideoList(w http.ResponseWriter, req *http.Reques
 	this.serveResultJson(w, req, http.StatusOK, &vResult)
 }
 
+//get my live publish address
+//@param sessionId
+//@param accessToken
+func (this *LiveServer) serveMyLivePlayUrls(w http.ResponseWriter, req *http.Request) {
+	vResult := service.MyLivePlayUrlsResult{}
+
+	req.ParseForm()
+
+	sessionId := req.FormValue("sessionId")
+	accessToken := req.FormValue("accessToken")
+
+	service.GetMyLivePlayUrls(sessionId, accessToken, &vResult)
+	this.serveResultJson(w, req, http.StatusOK, &vResult)
+}
+
 //get the play url for the publishing stream
 //@param sessionId
 //@param accessToken

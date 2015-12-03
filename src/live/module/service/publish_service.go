@@ -34,7 +34,7 @@ func (this *StopPublishResult) SetOk() {
 }
 
 func StatusPublish(sessionId, accessToken, streamId string, pResult *StreamPublishStatus) {
-	if _, valid := CheckAuthValid(sessionId, accessToken, pResult.ApiResult); !valid {
+	if _, valid := CheckAuthValid(sessionId, accessToken, &pResult.ApiResult); !valid {
 		return
 	}
 
@@ -59,7 +59,7 @@ func StatusPublish(sessionId, accessToken, streamId string, pResult *StreamPubli
 }
 
 func StartPublish(sessionId, accessToken, streamTitle, streamId, streamQualityStr, streamOrientationStr string, pResult *StartPublishResult) {
-	if _,valid:=CheckAuthValid(sessionId, accessToken, pResult.ApiResult);!valid {
+	if _, valid := CheckAuthValid(sessionId, accessToken, &pResult.ApiResult); !valid {
 		return
 	}
 
@@ -104,7 +104,7 @@ func StartPublish(sessionId, accessToken, streamTitle, streamId, streamQualitySt
 }
 
 func StopPublish(sessionId, accessToken, publishId string, pResult *StopPublishResult) {
-	if _,valid:=CheckAuthValid(sessionId, accessToken, pResult.ApiResult);!valid {
+	if _, valid := CheckAuthValid(sessionId, accessToken, &pResult.ApiResult); !valid {
 		return
 	}
 

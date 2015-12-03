@@ -67,6 +67,52 @@ func GetLivePlayUrl(streamId string) (livePlayUrls map[string]string, err error)
 	return
 }
 
+//@param streamId
+//@return rtmp, hls, flv live play urls
+func GetLivePlayUrls(streamId string) (livePlayUrls map[string]string, err error) {
+	crendentials := pili.NewCredentials(config.App.AccessKey, config.App.SecretKey)
+	hub := pili.NewHub(crendentials, config.App.LiveHub)
+	stream, gErr := hub.GetStream(streamId)
+	if gErr != nil {
+		err = errors.New(fmt.Sprintf("get live stream error, %s", gErr.Error()))
+		return
+	}
+
+	livePlayUrls = make(map[string]string)
+
+	rtmpLivePlayUrls, gErr := stream.RtmpLiveUrls()
+	if gErr != nil {
+		err = errors.New(fmt.Sprintf("get live stream rtmp play url error, %s", gErr.Error()))
+		return
+	}
+
+	hlsLivePlayUrls, gErr := stream.HlsLiveUrls()
+	if gErr != nil {
+		err = errors.New(fmt.Sprintf("get live stream hls play url error, %s", gErr.Error()))
+		return
+	}
+
+	flvLivePlayUrls, gErr := stream.HttpFlvLiveUrls()
+	if gErr != nil {
+		err = errors.New(fmt.Sprintf("get live stream flv play url error, %s", gErr.Error()))
+		return
+	}
+
+	if v, ok := rtmpLivePlayUrls["ORIGIN"]; ok {
+		livePlayUrls["RTMP"] = v
+	}
+
+	if v, ok := hlsLivePlayUrls["ORIGIN"]; ok {
+		livePlayUrls["HLS"] = v
+	}
+
+	if v, ok := flvLivePlayUrls["ORIGIN"]; ok {
+		livePlayUrls["FLV"] = v
+	}
+
+	return
+}
+
 func GetPlaybackUrl(streamId string, startTime, endTime int64) (playbackUrls map[string]string, err error) {
 	crendentials := pili.NewCredentials(config.App.AccessKey, config.App.SecretKey)
 	hub := pili.NewHub(crendentials, config.App.LiveHub)
