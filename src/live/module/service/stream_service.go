@@ -17,13 +17,8 @@ func (this *GetStreamResult) SetOk() {
 }
 
 func GetStream(sessionId, accessToken string, gResult *GetStreamResult) {
-	if !CheckAuthValid(sessionId, accessToken, gResult.ApiResult) {
-		return
-	}
-
-	userId, gErr := model.GetSession(sessionId)
-	if gErr != nil {
-		gResult.SetCode(API_SERVER_ERROR)
+	userId, valid := CheckAuthValid(sessionId, accessToken, gResult.ApiResult);
+	if !valid {
 		return
 	}
 

@@ -47,7 +47,7 @@ func (this *PublishingVideoListResult) SetOk() {
 type VideoPlayResult struct {
 	ApiResult
 	Orientation int `json:"orientation"`
-	PlayUrls map[string]string `json:"playUrls"`
+	PlayUrls    map[string]string `json:"playUrls"`
 }
 
 func (this *VideoPlayResult) SetOk() {
@@ -60,7 +60,7 @@ func (this *VideoPlayResult) SetOk() {
 type StreamPlayResult struct {
 	ApiResult
 	Orientation int `json:"orientation"`
-	PlayUrls map[string]string `json:"playUrls"`
+	PlayUrls    map[string]string `json:"playUrls"`
 }
 
 func (this *StreamPlayResult) SetOk() {
@@ -70,7 +70,7 @@ func (this *StreamPlayResult) SetOk() {
 
 //////////////////////
 func GetVideoList(sessionId, accessToken string, vResult *PlaybackVideoListResult) {
-	if !CheckAuthValid(sessionId, accessToken, vResult.ApiResult) {
+	if _, valid := CheckAuthValid(sessionId, accessToken, vResult.ApiResult); !valid {
 		return
 	}
 
@@ -100,7 +100,7 @@ func GetVideoList(sessionId, accessToken string, vResult *PlaybackVideoListResul
 }
 
 func GetPublishingList(sessionId, accessToken string, vResult *PublishingVideoListResult) {
-	if !CheckAuthValid(sessionId, accessToken, vResult.ApiResult) {
+	if _, valid := CheckAuthValid(sessionId, accessToken, vResult.ApiResult); !valid {
 		return
 	}
 
@@ -131,14 +131,8 @@ func GetPublishingList(sessionId, accessToken string, vResult *PublishingVideoLi
 }
 
 func GetMyVideoList(sessionId, accessToken string, vResult *PlaybackVideoListResult) {
-	if !CheckAuthValid(sessionId, accessToken, vResult.ApiResult) {
-		return
-	}
-
-	userId, gErr := model.GetSession(sessionId)
-	if gErr != nil {
-		log.Error("get session error,", gErr.Error())
-		vResult.SetCode(API_SESSION_EXPIRED_ERROR)
+	userId, valid := CheckAuthValid(sessionId, accessToken, vResult.ApiResult);
+	if !valid {
 		return
 	}
 
@@ -168,7 +162,7 @@ func GetMyVideoList(sessionId, accessToken string, vResult *PlaybackVideoListRes
 }
 
 func GetStreamPlayResult(sessionId, accessToken, publishId string, pResult *StreamPlayResult) {
-	if !CheckAuthValid(sessionId, accessToken, pResult.ApiResult) {
+	if _, valid := CheckAuthValid(sessionId, accessToken, pResult.ApiResult); !valid {
 		return
 	}
 
@@ -197,13 +191,13 @@ func GetStreamPlayResult(sessionId, accessToken, publishId string, pResult *Stre
 	}
 
 	pResult.PlayUrls = playUrls
-	pResult.Orientation=liveVideo.Orientation
+	pResult.Orientation = liveVideo.Orientation
 	pResult.SetOk()
 	return
 }
 
 func GetVideoPlayResult(sessionId, accessToken, publishId string, pResult *VideoPlayResult) {
-	if !CheckAuthValid(sessionId, accessToken, pResult.ApiResult) {
+	if _, valid := CheckAuthValid(sessionId, accessToken, pResult.ApiResult); !valid {
 		return
 	}
 
@@ -232,7 +226,7 @@ func GetVideoPlayResult(sessionId, accessToken, publishId string, pResult *Video
 	}
 
 	pResult.PlayUrls = playUrls
-	pResult.Orientation=liveVideo.Orientation
+	pResult.Orientation = liveVideo.Orientation
 	pResult.SetOk()
 	return
 }

@@ -13,7 +13,8 @@ type User struct {
 	Email  string `orm:"column(email);size(200);unique"`
 }
 
-//check mobile exists
+//@param mobile
+//check whether mobile exists
 func IsMobileExists(mobile string) (exists bool, err error) {
 	qs := orm.NewOrm().QueryTable("User").Filter("Mobile", mobile).Limit(1)
 	cnt, qErr := qs.Count()
@@ -31,6 +32,8 @@ func IsMobileExists(mobile string) (exists bool, err error) {
 	return
 }
 
+//@param name
+//check whether name exists
 func IsNameExists(name string) (exists bool, err error) {
 	qs := orm.NewOrm().QueryTable("User").Filter("Name", name).Limit(1)
 	cnt, qErr := qs.Count()
@@ -48,6 +51,8 @@ func IsNameExists(name string) (exists bool, err error) {
 	return
 }
 
+//@param email
+//check whether email exists
 func IsEmailExists(email string) (exists bool, err error) {
 	qs := orm.NewOrm().QueryTable("User").Filter("Email", email).Limit(1)
 	cnt, qErr := qs.Count()
@@ -65,7 +70,8 @@ func IsEmailExists(email string) (exists bool, err error) {
 	return
 }
 
-//get user
+//@param mobile
+//get user by mobile
 func GetUserByMobile(mobile string) (user *User, err error) {
 	user = &User{}
 	qs := orm.NewOrm().QueryTable("User").Filter("Mobile", mobile)
