@@ -4,7 +4,7 @@
 
 该项目是七牛直播demo客户端 [QLive for Android](https://github.com/qiniudemo/qiniu-live-android) 和 [PLdemo for iOS](https://github.com/qiniudemo/qiniu-live-iOS) 的直播业务服务器端。
 
-该项目是使用Golang编写的直播业务服务器端，可以直接运行，为了方便大家测试使用，可以使用已编译版本，[点击下载](http://devtools.qiniu.com/qiniu-live-server-v1.zip)。
+该项目是使用Golang编写的直播业务服务器端，可以直接运行，为了方便大家测试使用，可以使用已编译版本，[点击下载](http://devtools.qiniu.com/qiniu-live-server-v1.0.zip)。
 
 该项目主要功能是提供客户端推流和观看直播视频的API接口，模拟了常规APP开发中所需要的业务服务器端的功能。
 
