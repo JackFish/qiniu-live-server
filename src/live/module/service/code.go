@@ -22,9 +22,10 @@ const (
 )
 
 var ApiStatus = map[int]string{
-	API_PARAM_ERROR:        "param error, %s",
-	API_SERVER_ERROR:       "internal server error",
-	API_UNAUTHORIZED_ERROR: "access not allowed error",
+	API_PARAM_ERROR:           "param error, %s",
+	API_SERVER_ERROR:          "internal server error",
+	API_UNAUTHORIZED_ERROR:    "access not allowed error",
+	API_SESSION_EXPIRED_ERROR: "session expired error",
 
 	API_USER_NOT_FOUND_ERROR: "user not found error",
 	API_USER_PWD_ERROR:       "user password error",
