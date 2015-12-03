@@ -15,8 +15,8 @@ func (this *StreamPublishStatus) SetOk() {
 }
 
 type StartPublishResult struct {
-	PublishId string `json:"publishId,omitempty"`
 	ApiResult
+	PublishId string `json:"publishId,omitempty"`
 }
 
 func (this *StartPublishResult) SetOk() {

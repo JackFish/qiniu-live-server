@@ -34,7 +34,7 @@ type PublishingVideo struct {
 
 type PublishingVideoListResult struct {
 	ApiResult
-	VideoList []PublishingVideo `json:"videoList"`
+	VideoList []PublishingVideo `json:"videoList,omitempty"`
 }
 
 func (this *PublishingVideoListResult) SetOk() {
@@ -46,8 +46,8 @@ func (this *PublishingVideoListResult) SetOk() {
 
 type VideoPlayResult struct {
 	ApiResult
-	Orientation int               `json:"orientation"`
-	PlayUrls    map[string]string `json:"playUrls"`
+	Orientation int               `json:"orientation,omitempty"`
+	PlayUrls    map[string]string `json:"playUrls,omitempty"`
 }
 
 func (this *VideoPlayResult) SetOk() {
@@ -59,8 +59,8 @@ func (this *VideoPlayResult) SetOk() {
 
 type StreamPlayResult struct {
 	ApiResult
-	Orientation int               `json:"orientation"`
-	PlayUrls    map[string]string `json:"playUrls"`
+	Orientation int               `json:"orientation,omitempty"`
+	PlayUrls    map[string]string `json:"playUrls,omitempty"`
 }
 
 func (this *StreamPlayResult) SetOk() {
@@ -72,7 +72,7 @@ func (this *StreamPlayResult) SetOk() {
 
 type MyLivePlayUrlsResult struct {
 	ApiResult
-	LivePlayUrls map[string]string `json:"livePlayUrls"`
+	LivePlayUrls map[string]string `json:"livePlayUrls,omitempty"`
 }
 
 func (this *MyLivePlayUrlsResult) SetOk() {
