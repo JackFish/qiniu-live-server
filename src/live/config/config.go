@@ -83,6 +83,7 @@ func LoadConfig(confFile string) (cfg *SyncConfig, err error) {
 	if cfg.App.LogFile == "" {
 		cfg.App.LogFile = DEFAULT_LOG_FILE
 	}
+
 	//check log level
 	switch cfg.App.LogLevel {
 	case "debug":

@@ -9,27 +9,33 @@ import (
 	"live/module/model"
 	"live/server"
 	"os"
-
 	"runtime"
-	//"strconv"
-	//"strings"
 )
 
 const (
-	VERSION = "1.0.0"
+	VERSION = "1.0.1"
 )
 
 func initLog(logLevel int, logFile string) (err error) {
 	log.Info("init log")
 	log.SetOutputLevel(logLevel)
-	logFp, openErr := os.Create(logFile)
-	if openErr != nil {
-		err = openErr
-		return
+
+	var logFp *os.File
+	if logFile == "stdout" {
+		logFp = os.Stdout
+	} else {
+		var openErr error
+		logFp, openErr = os.OpenFile(logFile, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+		if openErr != nil {
+			err = openErr
+			return
+		}
 	}
 	log.SetOutput(logFp)
+
 	return
 }
+
 func main() {
 	runtime.GOMAXPROCS(runtime.NumCPU())
 	var confFile string
@@ -41,6 +47,7 @@ Usage of qlived:
 version ` + VERSION)
 	}
 	flag.Parse()
+
 	if confFile == "" {
 		fmt.Println("no config file specified")
 		os.Exit(1)
@@ -54,21 +61,23 @@ version ` + VERSION)
 		}
 		os.Exit(1)
 	}
+
 	//load config
 	cfg, cfgErr := config.LoadConfig(confFile)
 	if cfgErr != nil {
 		fmt.Println(cfgErr)
 		os.Exit(1)
 	}
-	//set
 
 	config.App = &cfg.App
+
 	//init log
 	lErr := initLog(cfg.App.QLogLevel, cfg.App.LogFile)
 	if lErr != nil {
 		fmt.Println("init log error,", lErr)
 		os.Exit(1)
 	}
+
 	//init orm
 	ormErr := model.InitOrm(&cfg.Orm)
 	if ormErr != nil {
