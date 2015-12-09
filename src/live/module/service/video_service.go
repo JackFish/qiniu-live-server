@@ -59,7 +59,7 @@ func (this *VideoPlayResult) SetOk() {
 
 type StreamPlayResult struct {
 	ApiResult
-	Orientation int               `json:"orientation,omitempty"`
+	Orientation int               `json:"orientation"`
 	PlayUrls    map[string]string `json:"playUrls,omitempty"`
 }
 
