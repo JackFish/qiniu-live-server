@@ -7,21 +7,28 @@ import (
 	"live/config"
 )
 
+
 //get stream
 //@param stream id
-//@return stream, err
-func GetStream(streamId string) (streamData string, err error) {
+//@return stream, code,err
+//if code==404, try to create a new stream
+func GetStream(streamId string) (streamData string, code int, err error) {
 	crendentials := pili.NewCredentials(config.App.AccessKey, config.App.SecretKey)
 	hub := pili.NewHub(crendentials, config.App.LiveHub)
 	stream, gErr := hub.GetStream(streamId)
 	if gErr != nil {
-		err = errors.New(fmt.Sprintf("get live stream error, %s", gErr.Error()))
+		if v, ok := gErr.(*pili.ErrorInfo); ok {
+			err = fmt.Errorf("get live stream error, %s", v.Message)
+			code = v.ErrCode
+		}else {
+			err = fmt.Errorf("get live stream error, %s", gErr.Error())
+		}
 		return
 	}
 
 	streamJson, tErr := stream.ToJSONString()
 	if tErr != nil {
-		err = errors.New("marshal live stream error")
+		err = fmt.Errorf("get live stream error, parse error %s", tErr.Error())
 		return
 	}
 

@@ -222,6 +222,7 @@ func GetVideoPlayResult(sessionId, accessToken, publishId string, pResult *Video
 
 	qErr := model.GetLiveVideoByPublishId(publishId, &liveVideo)
 	if qErr != nil {
+		log.Error("get live video by publish id error",qErr)
 		pResult.SetCode(API_SERVER_ERROR)
 		return
 	}
@@ -233,6 +234,7 @@ func GetVideoPlayResult(sessionId, accessToken, publishId string, pResult *Video
 
 	playUrls, gErr := pilis.GetPlaybackUrl(liveVideo.StreamId, liveVideo.StartTime, liveVideo.EndTime)
 	if gErr != nil {
+		log.Error("pili get playback url error",gErr)
 		pResult.SetCode(API_SERVER_ERROR)
 		return
 	}

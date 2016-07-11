@@ -13,8 +13,8 @@ var (
 )
 
 const (
-	DEFAULT_READ_TIMEOUT     = 60
-	DEFAULT_WRITE_TIMEOUT    = 60
+	DEFAULT_READ_TIMEOUT = 60
+	DEFAULT_WRITE_TIMEOUT = 60
 	DEFAULT_MAX_HEADER_BYTES = 1 << 12 //4KB
 
 	DEFAULT_LOG_FILE = "run.log"
@@ -28,6 +28,7 @@ type SyncConfig struct {
 
 //server config
 type ServerConfig struct {
+	LocationPrefix string `json:"location_prefix"`
 	ListenHost     string `json:"listen_host"`
 	ListenPort     int    `json:"listen_port"`
 	ReadTimeout    int    `json:"read_timeout,omitempty"`
